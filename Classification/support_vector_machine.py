@@ -1,0 +1,25 @@
+import numpy as np 
+from sklearn import preprocessing, cross_validation, neighbors, svm
+import pandas as pd 
+
+df = pd.read_csv('breast-cancer-wisconsin.data.txt')
+df.replace('?', -99999, inplace=True) #handles unknown data // -99999 is special num that tells algo its an outlier
+df.drop(['id'], 1, inplace=True) #dropping id, bc its useless
+
+X = np.array(df.drop(['class'],1)) #features = everything in data but label itself
+y = np.array(df['class']) #labels assigned 
+
+X_train, X_test, y_train, y_test = cross_validation.train_test_split(X,y,test_size=0.2) #assigning train and test data
+
+clf = svm.SVC() #calling classifer (svm)
+clf.fit(X_train, y_train) #train classifer 
+#should pickle for larger datsets
+
+accuracy = clf.score(X_test, y_test) #testing classifier
+print(accuracy)
+
+example_measures = np.array([[4,2,1,1,1,2,3,2,1],[4,2,1,2,2,2,3,2,1]]) #minus id and class // also serves as evaluation data
+example_measures = example_measures.reshape(len(example_measures),-1)
+
+prediction = clf.predict(example_measures)
+print(prediction)
