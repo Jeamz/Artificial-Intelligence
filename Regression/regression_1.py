@@ -33,7 +33,7 @@ df['label'] = df[forecast_col].shift(-forecast_out)
 
 
 #features: X, labels: y
-X = np.array(df.drop(['label', 'Adj. Close'], 1))
+X = np.array(df.drop(['label'], 1))
 X = preprocessing.scale(X) #scalling X before feeding to clasifier (new values, scale them along side other values, but does add to processing time)
 X_lately = X[-forecast_out:]
 X = X[:-forecast_out]
@@ -72,7 +72,6 @@ plt.legend(loc=4)
 plt.xlabel('Date')
 plt.ylabel('Price')
 plt.show()
-
 
 
 
